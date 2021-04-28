@@ -1,9 +1,16 @@
 import 'dart:ui';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'Screen/ForgotPassword.dart';
 import 'Screen/ResetPassword.dart';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); //Make sure you imported firebase_core
+  runApp(MaterialApp(
+    home: MyApp(),
+  ));
+}
 
 class MyApp extends StatelessWidget {
   @override

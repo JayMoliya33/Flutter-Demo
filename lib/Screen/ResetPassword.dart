@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/controllers/UserController.dart';
 
-class ResetPasswordPage extends StatelessWidget {
-  TextEditingController password = TextEditingController();
+class ResetPasswordPage extends StatefulWidget {
+  @override
+  _ResetPasswordPageState createState() => _ResetPasswordPageState();
+}
+
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
+
+  TextEditingController oldPassword = TextEditingController();
+  TextEditingController newPassword = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +69,7 @@ class ResetPasswordPage extends StatelessWidget {
                     ),
                     SizedBox(height: 5),
                     TextFormField(
+                      controller: oldPassword,
                       obscureText: true,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.lock),
@@ -70,7 +84,7 @@ class ResetPasswordPage extends StatelessWidget {
                       ),
                       validator: (String value) {
                         if (value.isEmpty) {
-                          return 'Please Enter Password';
+                          return 'Please Enter Old Password';
                         }
                         return null;
                       },
@@ -88,7 +102,7 @@ class ResetPasswordPage extends StatelessWidget {
                           ),
                           SizedBox(height: 5),
                           TextFormField(
-                            controller: password,
+                            controller: newPassword,
                             obscureText: true,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.lock),
@@ -147,9 +161,7 @@ class ResetPasswordPage extends StatelessWidget {
                             if (value.isEmpty) {
                               return 'Please re-Enter Password';
                             }
-                            print(password.text);
-                            print(confirmPassword.text);
-                            if (password.text != confirmPassword.text) {
+                            if (newPassword.text != confirmPassword.text) {
                               return "Password does not match";
                             }
                             return null;
@@ -175,6 +187,10 @@ class ResetPasswordPage extends StatelessWidget {
                     height: 60,
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
+                        UserController _con = new UserController();
+                        _con.user.password = oldPassword.text;
+                        _con.user.passwordConfirmation = confirmPassword.text;
+                        _con.resetPassword();
                         print("successful");
                         return;
                       } else {

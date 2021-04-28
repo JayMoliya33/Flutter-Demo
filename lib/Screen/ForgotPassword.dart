@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/Screen/OtpVerification.dart';
-import 'package:form_field_validator/form_field_validator.dart';
+import 'package:flutter_demo/controllers/UserController.dart';
 
-class ForgotPasswordPage extends StatelessWidget {
+
+class ForgotPasswordPage extends StatefulWidget {
+  @override
+  _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
+}
+
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String email = "";
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +49,7 @@ class ForgotPasswordPage extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                "Enter your email for verification process,\n we will send 4 digit code to your email.",
+                "Enter your email for verification process,\n we will send link to your email.",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16, color: Colors.grey[700]),
               ),
@@ -46,7 +58,48 @@ class ForgotPasswordPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
                   children: <Widget>[
-                    inputFile(Icons.email, label: "Email"),
+                Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Enter Email',
+                      style: TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.email),
+                        hintText: 'Enter Email',
+                        contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey[400]),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey[400]),
+                        ),
+                      ),
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'Required';
+                        }
+                        if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                            .hasMatch(value)) {
+                          return 'Enter valid Email';
+                        }
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        email = value;
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
                   ],
                 ),
               ),
@@ -67,15 +120,11 @@ class ForgotPasswordPage extends StatelessWidget {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => OtpVerificationScreen()),
-                        );
-                      } else {
-                        print("error");
-                      }
+                      print('inside onpressed');
+                      // if (_formKey.currentState.validate()) {
+                        UserController _con = new UserController();
+                        _con.user.email = "nainavimal2000@gmail.com";
+                          _con.forgotPassword();
                     },
                     color: Color(0xff0095FF),
                     elevation: 0,
@@ -83,7 +132,7 @@ class ForgotPasswordPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Text(
-                      "Continue",
+                      "Send link",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
@@ -99,50 +148,3 @@ class ForgotPasswordPage extends StatelessWidget {
   }
 }
 
-Widget inputFile(IconData icons, {label, obscureText = false}) {
-  String email;
-
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        label,
-        style: TextStyle(
-            fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
-      ),
-      SizedBox(
-        height: 5,
-      ),
-      TextFormField(
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          prefixIcon: Icon(icons),
-          hintText: 'Enter Email',
-          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey[400]),
-          ),
-          border: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey[400]),
-          ),
-        ),
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'Required';
-          }
-          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-              .hasMatch(value)) {
-            return 'Enter valid Email';
-          }
-          return null;
-        },
-        onSaved: (String value) {
-          email = value;
-        },
-      ),
-      SizedBox(
-        height: 10,
-      ),
-    ],
-  );
-}
