@@ -3,7 +3,7 @@ class Constant {
   static final String APP_SECRET = "d4ed95d765b7f2007ed2e98099e8c37b";
 
   // static final String BASE_URL = "https://e3-qkmountain.qkinnovations.com/element3-backend/api/";
-  static final String BASE_URL = "https://e3-qkmountain.qkinnovations.com";
+  static final String BASE_URL = "e3-qkmountain.qkinnovations.com";
   static final String BASE_URL_1 = "element3-backend/api/";
 
   //Authentication

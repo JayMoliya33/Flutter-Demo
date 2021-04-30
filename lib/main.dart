@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/Screen/ChangePassword.dart';
 import 'Screen/ForgotPassword.dart';
 import 'Screen/ResetPassword.dart';
 
@@ -65,6 +66,22 @@ class HomePage extends StatelessWidget {
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
                         fontSize: 18),
+                  ),
+                ),
+                SizedBox(height: 30,),
+                MaterialButton(
+                  minWidth: double.infinity,
+                  height: 60,
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ChangePasswordPage()));
+                  },
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Text(
+                    "Change Password",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                   ),
                 ),
               ],

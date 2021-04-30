@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/controllers/UserController.dart';
 
-class ResetPasswordPage extends StatefulWidget {
+class ChangePasswordPage extends StatefulWidget {
   @override
-  _ResetPasswordPageState createState() => _ResetPasswordPageState();
+  _ChangePasswordPageState createState() => _ChangePasswordPageState();
 }
 
-class _ResetPasswordPageState extends State<ResetPasswordPage> {
+class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
-  TextEditingController email = TextEditingController();
+  TextEditingController oldPassword = TextEditingController();
   TextEditingController newPassword = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
 
@@ -51,7 +51,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 SizedBox(
                   height: 50,
                 ),
-                Text("Reset Password",
+                Text("Change Password",
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -61,7 +61,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   children: <Widget>[
                     SizedBox(height: 30),
                     Text(
-                      "Email",
+                      "Old Password",
                       style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w400,
@@ -69,9 +69,10 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     ),
                     SizedBox(height: 5),
                     TextFormField(
-                      controller: email,
+                      controller: oldPassword,
+                      obscureText: true,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.email),
+                        prefixIcon: Icon(Icons.lock),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                         enabledBorder: OutlineInputBorder(
@@ -83,12 +84,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                       ),
                       validator: (String value) {
                         if (value.isEmpty) {
-                          return 'Please Enter Email';
-                        }
-                        if (!RegExp(
-                            "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                            .hasMatch(value)) {
-                          return 'Enter valid Email';
+                          return 'Please Enter Old Password';
                         }
                         return null;
                       },
@@ -133,47 +129,46 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         ]),
                     SizedBox(height: 20),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Confirm Password",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black87),
-                        ),
-                        SizedBox(height: 5),
-                        TextFormField(
-                          controller: confirmPassword,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.lock),
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 10),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.grey[400],
-                              ),
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.grey[400],
-                              ),
-                            ),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Confirm Password",
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black87),
                           ),
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return 'Please re-Enter Password';
-                            }
-                            if (newPassword.text != confirmPassword.text) {
-                              return "Password does not match";
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 30)
+                          SizedBox(height: 5),
+                          TextFormField(
+                            controller: confirmPassword,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.lock),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 10),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.grey[400],
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.grey[400],
+                                ),
+                              ),
+                            ),
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return 'Please Enter Confirm Password';
+                              }
+                              if (newPassword.text != confirmPassword.text) {
+                                return "Password does not match";
+                              }
+                              return null;
+                            },
+                          ),
+                        ]),
+                    SizedBox(height: 20),
                   ],
                 ),
                 Container(
@@ -192,10 +187,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
                         UserController _con = new UserController();
-                        _con.user.email = email.text;
-                        _con.user.password = newPassword.text;
-                        _con.user.passwordConfirmation = confirmPassword.text;
-                        _con.updatePassword();
+                        _con.user.password = oldPassword.text;
+                        _con.user.passwordConfirmation = newPassword.text;
+                        _con.changePassword();
                         print("successful");
                         return;
                       } else {
